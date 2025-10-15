@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formSection = document.getElementById('formSection');
     const resultsSection = document.getElementById('resultsSection');
     const reportSection = document.getElementById('reportSection');
+    const databaseViewSection = document.getElementById('databaseViewSection');
 
     const pumpForm = document.getElementById('pumpSelectorForm');
     const variationRadios = document.querySelectorAll('input[name="variation"]');
@@ -47,6 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToFormBtn = document.getElementById('backToFormBtn');
     const backToResultsBtn = document.getElementById('backToResultsBtn');
     const printReportBtn = document.getElementById('printReportBtn');
+    const viewDatabaseBtn = document.getElementById('viewDatabaseBtn');
+    const backToFormFromDbBtn = document.getElementById('backToFormFromDbBtn');
 
     let lastUserInputs = {};
     let comparisonChart = null;
@@ -108,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Função para gerir a visibilidade das secções com animação
     function switchSection(targetSection) {
-        [formSection, resultsSection, reportSection].forEach(section => {
+        [formSection, resultsSection, reportSection, databaseViewSection].forEach(section => {
             if (section === targetSection) {
                 // Usa um pequeno delay para garantir que a classe 'hidden' é removida antes de 'visible' ser adicionada
                 setTimeout(() => {
@@ -120,6 +123,63 @@ document.addEventListener('DOMContentLoaded', () => {
                 section.classList.add('hidden');
             }
         });
+    }
+
+    function displayDatabase(brandFilter = 'all') {
+        const dbFiltersContainer = document.getElementById('dbFiltersContainer');
+        const dbTableContainer = document.getElementById('dbTableContainer');
+
+        const brands = ['all', ...new Set(pumpDatabase.map(p => p.brand))];
+        let filterHTML = `
+            <label for="brandFilter" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filtrar por Marca:</label>
+            <select id="brandFilter" name="brandFilter" class="mt-1 block w-full md:w-1/3 p-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        `;
+        brands.forEach(brand => {
+            const selected = brand === brandFilter ? 'selected' : '';
+            filterHTML += `<option value="${brand}" ${selected}>${brand === 'all' ? 'Todas as Marcas' : brand}</option>`;
+        });
+        filterHTML += `</select>`;
+        dbFiltersContainer.innerHTML = filterHTML;
+
+        document.getElementById('brandFilter').addEventListener('change', (e) => {
+            displayDatabase(e.target.value);
+        });
+
+        const filteredPumps = brandFilter === 'all'
+            ? pumpDatabase
+            : pumpDatabase.filter(p => p.brand === brandFilter);
+
+        let tableHTML = `
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead class="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Marca</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Modelo</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Classe Energ.</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Ligação</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Variação Vel.</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+        `;
+
+        filteredPumps.forEach(pump => {
+            tableHTML += `
+                <tr>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">${pump.brand}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">${pump.model}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-center text-gray-500 dark:text-gray-300">${pump.energyClass}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 capitalize">${pump.connectionType} DN${pump.connectionDN}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-center text-gray-500 dark:text-gray-300">${pump.hasVariation ? 'Sim' : 'Não'}</td>
+                </tr>
+            `;
+        });
+
+        tableHTML += `
+                </tbody>
+            </table>
+        `;
+        dbTableContainer.innerHTML = tableHTML;
     }
 
     function isPointOnOrBelowCurve(point, curve) {
@@ -581,6 +641,15 @@ document.addEventListener('DOMContentLoaded', () => {
             reportChart.update();
         }
         window.print();
+    });
+
+    viewDatabaseBtn.addEventListener('click', () => {
+        displayDatabase();
+        switchSection(databaseViewSection);
+    });
+
+    backToFormFromDbBtn.addEventListener('click', () => {
+        switchSection(formSection);
     });
 
 

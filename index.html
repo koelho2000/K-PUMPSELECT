@@ -109,8 +109,11 @@
                         </div>
                     </div>
 
-                    <!-- Botão de Ação -->
-                    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-600 text-right">
+                    <!-- Botões de Ação -->
+                    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-600 flex justify-end items-center gap-4">
+                        <button type="button" id="viewDatabaseBtn" class="py-3 px-6 border border-gray-300 dark:border-gray-500 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-105">
+                            Ver Base de Dados
+                        </button>
                         <button type="submit" class="inline-flex justify-center py-3 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-105">
                             Encontrar Bombas
                         </button>
@@ -157,6 +160,24 @@
                 
                 <div id="reportContent" class="space-y-6">
                     <!-- O conteúdo do relatório será inserido aqui -->
+                </div>
+            </section>
+
+            <!-- Secção de Visualização da Base de Dados (Inicialmente oculta) -->
+            <section id="databaseViewSection" class="p-6 md:p-8 hidden">
+                <div class="flex justify-between items-center mb-6 no-print">
+                    <h2 class="text-2xl font-bold">Base de Dados de Bombas</h2>
+                    <button id="backToFormFromDbBtn" class="py-2 px-4 text-sm font-medium rounded-md text-white bg-gray-500 hover:bg-gray-600">Voltar</button>
+                </div>
+
+                <!-- Filtros -->
+                <div id="dbFiltersContainer" class="mb-6 bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg">
+                    <!-- Os filtros serão inseridos aqui -->
+                </div>
+
+                <!-- Tabela da Base de Dados -->
+                <div id="dbTableContainer" class="overflow-x-auto">
+                    <!-- A tabela da base de dados será inserida aqui -->
                 </div>
             </section>
         </main>
