@@ -1,0 +1,89 @@
+body {
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilos para transições suaves entre secções */
+#formSection, #resultsSection, #reportSection {
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none; /* Impede interação quando oculto */
+    display: none !important; /* Mantém a compatibilidade com a lógica JS existente */
+}
+
+/* Animação de entrada */
+.visible {
+    opacity: 1;
+    transform: translateY(0);
+    display: block !important;
+}
+
+/* Estilos para a impressão */
+@media print {
+    /* Esconde elementos que não devem aparecer na impressão */
+    body {
+        background-color: #fff !important; /* Garante fundo branco */
+    }
+
+    #mainContainer {
+        box-shadow: none !important;
+        max-width: 100% !important;
+        border: none !important;
+    }
+
+    #reportToolbar, .no-print,
+    #pumpSelectorForm, #resultsSection,
+    body > footer {
+        display: none !important;
+    }
+
+    /* Garante que a secção do relatório e o seu conteúdo sejam visíveis */
+    #reportSection, #reportContent {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: none !important;
+        background-color: #fff !important;
+        color: #000 !important;
+    }
+
+    /* Ajustes de layout para o relatório */
+    #reportContent, #reportSection {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .dark\:bg-gray-800 { background-color: #fff !important; }
+    .dark\:text-gray-200 { color: #000 !important; }
+    .dark\:text-white { color: #000 !important; }
+    .dark\:border-gray-600 { border-color: #ccc !important; }
+    .text-indigo-600 { color: #4f46e5 !important; }
+    .dark\:text-indigo-400 { color: #4f46e5 !important; }
+
+    /* Força os gráficos a terem um tamanho razoável na impressão */
+    #pumpCurveChart {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Evita quebras de página dentro de elementos importantes */
+    .border, .grid {
+        page-break-inside: avoid;
+    }
+
+    h2, h3 {
+        page-break-after: avoid;
+    }
+
+    table {
+        page-break-inside: auto;
+    }
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+}
