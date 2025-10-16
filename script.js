@@ -1,38 +1,20 @@
-// --- BASE DE DADOS SIMULADA COM CURVAS DE DESEMPENHO, POTÊNCIA E CLASSE ENERGÉTICA ---
-const pumpDatabase = [
-    // Grundfos
-    { brand: 'Grundfos', model: 'MAGNA3 32-120 F', energyClass: 'A', voltage: '400V', powerFactor: 0.9, systemType: ['aquecimento', 'arrefecimento'], fluidCompatibility: ['agua', 'agua_glicol'], maxTemp: 110, minTemp: -10, maxFlow: 10, maxHead: 12, hasVariation: true, controlType: ['pressao', 'temperatura'], material: 'ferro_fundido', dimensions: '220x210x190', weight: 12.5, connectionType: 'flangeada', connectionDN: 32, estimatedPrice: 1150, curveData: [{x:0,y:12},{x:2,y:11.5},{x:4,y:10},{x:6,y:8},{x:8,y:5},{x:10,y:2}], powerCurveData: [{x:0,y:0.05},{x:2,y:0.2},{x:4,y:0.35},{x:6,y:0.45},{x:8,y:0.5},{x:10,y:0.55}] },
-    { brand: 'Grundfos', model: 'ALPHA2 25-60 180', energyClass: 'A', voltage: '230V', powerFactor: 0.9, systemType: ['aquecimento'], fluidCompatibility: ['agua'], maxTemp: 110, minTemp: 2, maxFlow: 3, maxHead: 6, hasVariation: true, controlType: ['pressao'], material: 'ferro_fundido', dimensions: '180x150x130', weight: 4.8, connectionType: 'roscada', connectionDN: 25, estimatedPrice: 480, curveData: [{x:0,y:6},{x:0.5,y:5.5},{x:1,y:5},{x:1.5,y:4.5},{x:2,y:3.5},{x:2.5,y:2},{x:3,y:1}], powerCurveData: [{x:0,y:0.01},{x:0.5,y:0.02},{x:1,y:0.03},{x:1.5,y:0.04},{x:2,y:0.045},{x:2.5,y:0.05},{x:3,y:0.05}] },
-    { brand: 'Grundfos', model: 'UPS 25-80 N 180', energyClass: 'C', voltage: '230V', powerFactor: 0.85, systemType: ['aquecimento', 'arrefecimento'], fluidCompatibility: ['agua', 'agua_glicol'], maxTemp: 110, minTemp: -10, maxFlow: 7, maxHead: 8, hasVariation: false, controlType: ['none'], material: 'aco_inoxidavel', dimensions: '180x160x140', weight: 5.2, connectionType: 'roscada', connectionDN: 25, estimatedPrice: 620, curveData: [{x:0,y:8},{x:1,y:7.5},{x:2,y:7},{x:3,y:6},{x:4,y:5},{x:5,y:3.5},{x:6,y:2},{x:7,y:0.5}], powerCurveData: [{x:0,y:0.04},{x:1,y:0.09},{x:2,y:0.12},{x:3,y:0.15},{x:4,y:0.18},{x:5,y:0.2},{x:6,y:0.21},{x:7,y:0.22}] },
-    { brand: 'Grundfos', model: 'ALPHA1 L 25-40 180', energyClass: 'B', voltage: '230V', powerFactor: 0.88, systemType: ['aquecimento'], fluidCompatibility: ['agua'], maxTemp: 95, minTemp: 2, maxFlow: 2.5, maxHead: 4, hasVariation: true, controlType: ['pressao'], material: 'ferro_fundido', dimensions: '180x130x120', weight: 4.0, connectionType: 'roscada', connectionDN: 25, estimatedPrice: 350, curveData: [{x:0,y:4},{x:0.5,y:3.8},{x:1,y:3.5},{x:1.5,y:3},{x:2,y:2},{x:2.5,y:1}], powerCurveData: [{x:0,y:0.01},{x:0.5,y:0.015},{x:1,y:0.02},{x:1.5,y:0.028},{x:2,y:0.035},{x:2.5,y:0.04}] },
+let pumpDatabase = [];
 
-    // Wilo
-    { brand: 'Wilo', model: 'Stratos MAXO 32/0,5-12', energyClass: 'A', voltage: '400V', powerFactor: 0.9, systemType: ['aquecimento', 'arrefecimento', 'condensacao'], fluidCompatibility: ['agua', 'agua_glicol'], maxTemp: 110, minTemp: -10, maxFlow: 14, maxHead: 12, hasVariation: true, controlType: ['pressao', 'temperatura'], material: 'ferro_fundido', dimensions: '240x220x200', weight: 13.0, connectionType: 'flangeada', connectionDN: 32, estimatedPrice: 1250, curveData: [{x:0,y:12},{x:2,y:11.8},{x:4,y:11},{x:6,y:10},{x:8,y:8.5},{x:10,y:6.5},{x:12,y:4},{x:14,y:1.5}], powerCurveData: [{x:0,y:0.06},{x:2,y:0.25},{x:4,y:0.4},{x:6,y:0.55},{x:8,y:0.65},{x:10,y:0.7},{x:12,y:0.75},{x:14,y:0.8}] },
-    { brand: 'Wilo', model: 'Yonos PICO plus 25/1-6', energyClass: 'A', voltage: '230V', powerFactor: 0.9, systemType: ['aquecimento', 'arrefecimento'], fluidCompatibility: ['agua'], maxTemp: 95, minTemp: -10, maxFlow: 3.5, maxHead: 6, hasVariation: true, controlType: ['pressao'], material: 'ferro_fundido', dimensions: '180x145x125', weight: 4.5, connectionType: 'roscada', connectionDN: 25, estimatedPrice: 450, curveData: [{x:0,y:6},{x:0.5,y:5.8},{x:1,y:5.5},{x:1.5,y:5},{x:2,y:4},{x:2.5,y:3},{x:3,y:2},{x:3.5,y:1}], powerCurveData: [{x:0,y:0.01},{x:0.5,y:0.02},{x:1,y:0.03},{x:1.5,y:0.04},{x:2,y:0.05},{x:2.5,y:0.055},{x:3,y:0.06},{x:3.5,y:0.06}] },
-    { brand: 'Wilo', model: 'TOP-S 32/10 F', energyClass: 'B', voltage: '230V', powerFactor: 0.85, systemType: ['aquecimento', 'arrefecimento'], fluidCompatibility: ['agua', 'agua_glicol'], maxTemp: 130, minTemp: -20, maxFlow: 10, maxHead: 10, hasVariation: false, controlType: ['none'], material: 'ferro_fundido', dimensions: '220x180x160', weight: 7.5, connectionType: 'flangeada', connectionDN: 32, estimatedPrice: 750, curveData: [{x:0,y:10},{x:2,y:9.5},{x:4,y:8.5},{x:6,y:7},{x:8,y:5},{x:10,y:2}], powerCurveData: [{x:0,y:0.05},{x:2,y:0.18},{x:4,y:0.25},{x:6,y:0.3},{x:8,y:0.35},{x:10,y:0.4}] },
-    { brand: 'Wilo', model: 'Varios PICO 25/1-7', energyClass: 'A', voltage: '230V', powerFactor: 0.9, systemType: ['aquecimento', 'arrefecimento'], fluidCompatibility: ['agua', 'agua_glicol'], maxTemp: 95, minTemp: -10, maxFlow: 4, maxHead: 7.5, hasVariation: true, controlType: ['pressao', 'temperatura'], material: 'ferro_fundido', dimensions: '180x160x140', weight: 4.8, connectionType: 'roscada', connectionDN: 25, estimatedPrice: 550, curveData: [{x:0,y:7.5},{x:0.5,y:7},{x:1,y:6.5},{x:2,y:5.5},{x:3,y:4},{x:4,y:2}], powerCurveData: [{x:0,y:0.01},{x:0.5,y:0.025},{x:1,y:0.04},{x:2,y:0.06},{x:3,y:0.07},{x:4,y:0.075}] },
+async function loadDatabase() {
+    try {
+        const response = await fetch('database.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        pumpDatabase = await response.json();
+        initializeApp();
+        document.body.classList.add('app-ready');
+    } catch (error) {
+        console.error("Não foi possível carregar a base de dados de bombas:", error);
+    }
+}
 
-    // KSB
-    { brand: 'KSB', model: 'Calio 32-120', energyClass: 'A', voltage: '400V', powerFactor: 0.9, systemType: ['aquecimento', 'arrefecimento'], fluidCompatibility: ['agua', 'agua_glicol'], maxTemp: 110, minTemp: -10, maxFlow: 13, maxHead: 12.5, hasVariation: true, controlType: ['pressao', 'temperatura'], material: 'ferro_fundido', dimensions: '230x215x195', weight: 12.8, connectionType: 'flangeada', connectionDN: 32, estimatedPrice: 1180, curveData: [{x:0,y:12.5},{x:2,y:12},{x:4,y:11},{x:6,y:9.5},{x:8,y:7.5},{x:10,y:5},{x:12,y:2.5},{x:13,y:1}], powerCurveData: [{x:0,y:0.06},{x:2,y:0.22},{x:4,y:0.38},{x:6,y:0.5},{x:8,y:0.6},{x:10,y:0.68},{x:12,y:0.72},{x:13,y:0.75}] },
-    { brand: 'KSB', model: 'Rio-Eco N 25/1-6', energyClass: 'B', voltage: '230V', powerFactor: 0.9, systemType: ['aquecimento'], fluidCompatibility: ['agua'], maxTemp: 95, minTemp: 5, maxFlow: 3.2, maxHead: 6, hasVariation: true, controlType: ['pressao'], material: 'bronze', dimensions: '180x155x135', weight: 5.5, connectionType: 'roscada', connectionDN: 25, estimatedPrice: 580, curveData: [{x:0,y:6},{x:0.5,y:5.6},{x:1,y:5.1},{x:1.5,y:4.6},{x:2,y:3.8},{x:2.5,y:2.8},{x:3,y:1.5},{x:3.2,y:1}], powerCurveData: [{x:0,y:0.01},{x:0.5,y:0.02},{x:1,y:0.03},{x:1.5,y:0.04},{x:2,y:0.048},{x:2.5,y:0.05},{x:3,y:0.055},{x:3.2,y:0.055}] },
-    { brand: 'KSB', model: 'PH-100C', energyClass: 'C', voltage: '230V', powerFactor: 0.85, systemType: ['aquecimento', 'arrefecimento'], fluidCompatibility: ['agua'], maxTemp: 90, minTemp: 0, maxFlow: 4, maxHead: 8.5, hasVariation: false, controlType: ['none'], material: 'ferro_fundido', dimensions: '180x150x130', weight: 5.0, connectionType: 'roscada', connectionDN: 25, estimatedPrice: 400, curveData: [{x:0,y:8.5},{x:1,y:8},{x:2,y:7},{x:3,y:5},{x:4,y:2.5}], powerCurveData: [{x:0,y:0.03},{x:1,y:0.08},{x:2,y:0.11},{x:3,y:0.14},{x:4,y:0.16}] },
-    { brand: 'KSB', model: 'Calio S 25-60', energyClass: 'A', voltage: '230V', powerFactor: 0.9, systemType: ['aquecimento'], fluidCompatibility: ['agua', 'agua_glicol'], maxTemp: 95, minTemp: 2, maxFlow: 3.5, maxHead: 6, hasVariation: true, controlType: ['pressao'], material: 'ferro_fundido', dimensions: '180x150x130', weight: 4.7, connectionType: 'roscada', connectionDN: 25, estimatedPrice: 490, curveData: [{x:0,y:6},{x:0.5,y:5.7},{x:1,y:5.3},{x:1.5,y:4.8},{x:2,y:4},{x:2.5,y:3},{x:3,y:1.8},{x:3.5,y:0.8}], powerCurveData: [{x:0,y:0.01},{x:0.5,y:0.02},{x:1,y:0.03},{x:1.5,y:0.04},{x:2,y:0.048},{x:2.5,y:0.052},{x:3,y:0.055},{x:3.5,y:0.058}] },
-
-    // LOWARA
-    { brand: 'LOWARA', model: 'ecocirc XL 32-120', energyClass: 'A', voltage: '400V', powerFactor: 0.9, systemType: ['aquecimento', 'arrefecimento'], fluidCompatibility: ['agua', 'agua_glicol'], maxTemp: 110, minTemp: -10, maxFlow: 11, maxHead: 12, hasVariation: true, controlType: ['pressao', 'temperatura'], material: 'ferro_fundido', dimensions: '225x210x190', weight: 12.2, connectionType: 'flangeada', connectionDN: 32, estimatedPrice: 1100, curveData: [{x:0,y:12},{x:2,y:11.6},{x:4,y:10.5},{x:6,y:8.5},{x:8,y:6},{x:10,y:3},{x:11,y:1}], powerCurveData: [{x:0,y:0.05},{x:2,y:0.21},{x:4,y:0.36},{x:6,y:0.48},{x:8,y:0.55},{x:10,y:0.6},{x:11,y:0.62}] },
-    { brand: 'LOWARA', model: 'ecocirc M 25-6/180', energyClass: 'B', voltage: '230V', powerFactor: 0.9, systemType: ['aquecimento'], fluidCompatibility: ['agua'], maxTemp: 95, minTemp: 2, maxFlow: 3.3, maxHead: 6, hasVariation: true, controlType: ['pressao'], material: 'ferro_fundido', dimensions: '180x148x128', weight: 4.6, connectionType: 'roscada', connectionDN: 25, estimatedPrice: 465, curveData: [{x:0,y:6},{x:0.5,y:5.7},{x:1,y:5.2},{x:1.5,y:4.7},{x:2,y:3.8},{x:2.5,y:2.5},{x:3.3,y:1.2}], powerCurveData: [{x:0,y:0.01},{x:0.5,y:0.02},{x:1,y:0.03},{x:1.5,y:0.04},{x:2,y:0.05},{x:2.5,y:0.055},{x:3.3,y:0.06}] },
-    { brand: 'LOWARA', model: 'e-LNE 32-160/150', energyClass: 'C', voltage: '400V', powerFactor: 0.85, systemType: ['aquecimento', 'arrefecimento'], fluidCompatibility: ['agua', 'agua_glicol'], maxTemp: 120, minTemp: -20, maxFlow: 20, maxHead: 15, hasVariation: false, controlType: ['none'], material: 'aco_inoxidavel', dimensions: '300x250x220', weight: 25.0, connectionType: 'flangeada', connectionDN: 32, estimatedPrice: 1500, curveData: [{x:0,y:15},{x:4,y:14.5},{x:8,y:13},{x:12,y:11},{x:16,y:8},{x:20,y:4}], powerCurveData: [{x:0,y:0.1},{x:4,y:0.4},{x:8,y:0.7},{x:12,y:1.0},{x:16,y:1.3},{x:20,y:1.5}] },
-
-    // DAB PUMPS
-    { brand: 'DAB', model: 'EVOSTA 2 25/60', energyClass: 'A', voltage: '230V', powerFactor: 0.9, systemType: ['aquecimento', 'arrefecimento'], fluidCompatibility: ['agua', 'agua_glicol'], maxTemp: 110, minTemp: -10, maxFlow: 3.6, maxHead: 6.9, hasVariation: true, controlType: ['pressao'], material: 'ferro_fundido', dimensions: '180x140x130', weight: 4.2, connectionType: 'roscada', connectionDN: 25, estimatedPrice: 420, curveData: [{x:0,y:6.9},{x:0.5,y:6.5},{x:1,y:6},{x:1.5,y:5.2},{x:2,y:4.5},{x:2.5,y:3.5},{x:3,y:2.5},{x:3.6,y:1}], powerCurveData: [{x:0,y:0.01},{x:0.5,y:0.02},{x:1,y:0.03},{x:1.5,y:0.04},{x:2,y:0.05},{x:2.5,y:0.058},{x:3,y:0.065},{x:3.6,y:0.07}] },
-
-    // SPERONI
-    { brand: 'Speroni', model: 'SCR 25/60-180', energyClass: 'B', voltage: '230V', powerFactor: 0.88, systemType: ['aquecimento'], fluidCompatibility: ['agua'], maxTemp: 110, minTemp: 5, maxFlow: 3.4, maxHead: 6, hasVariation: false, controlType: ['none'], material: 'ferro_fundido', dimensions: '180x155x135', weight: 4.9, connectionType: 'roscada', connectionDN: 25, estimatedPrice: 380, curveData: [{x:0,y:6},{x:0.5,y:5.6},{x:1,y:5.1},{x:1.5,y:4.5},{x:2,y:3.7},{x:2.5,y:2.8},{x:3,y:1.7},{x:3.4,y:0.9}], powerCurveData: [{x:0,y:0.015},{x:0.5,y:0.025},{x:1,y:0.035},{x:1.5,y:0.045},{x:2,y:0.055},{x:2.5,y:0.06},{x:3,y:0.065},{x:3.4,y:0.07}] }
-];
-
-// --- MANIPULAÇÃO DO DOM E LÓGICA DA APLICAÇÃO ---
-
-document.addEventListener('DOMContentLoaded', () => {
+function initializeApp() {
     const formSection = document.getElementById('formSection');
     const resultsSection = document.getElementById('resultsSection');
     const reportSection = document.getElementById('reportSection');
@@ -82,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const headAtOpFlow = getInterpolatedValue(userInputs.flow, pump.curveData);
 
             // Cálculo da folga
-            const folga = ((headAtOpFlow - userInputs.head) / userInputs.head) * 100;
+            const folga = headAtOpFlow > 0 ? ((headAtOpFlow - userInputs.head) / userInputs.head) * 100 : -100;
 
             // Cálculo do rendimento (η = P_hidráulica / P_elétrica)
             // P_hidráulica (W) = Q(m³/s) * H(m) * ρ(kg/m³) * g(m/s²)
@@ -113,11 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function switchSection(targetSection) {
         [formSection, resultsSection, reportSection, databaseViewSection].forEach(section => {
             if (section === targetSection) {
-                // Usa um pequeno delay para garantir que a classe 'hidden' é removida antes de 'visible' ser adicionada
-                setTimeout(() => {
-                    section.classList.remove('hidden');
-                    section.classList.add('visible');
-                }, 50);
+                section.classList.remove('hidden');
+                section.classList.add('visible');
             } else {
                 section.classList.remove('visible');
                 section.classList.add('hidden');
@@ -195,7 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         if (!p1 || !p2) return false;
-        // Evitar divisão por zero se os pontos x forem iguais
         if (p2.x === p1.x) return head <= p1.y;
         const interpolatedHead = p1.y + ((flow - p1.x) * (p2.y - p1.y)) / (p2.x - p1.x);
         return head <= interpolatedHead;
@@ -218,30 +196,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function curatePumpSelection(pumps) {
-        // A ordenação principal por potência já foi feita. Esta função apenas seleciona.
-        if (pumps.length <= 10) return pumps;
-
-        const finalSelection = [];
-        const brandsRepresented = new Set();
-
-        // Garantir pelo menos uma bomba de cada marca (a mais eficiente)
-        for (const pump of pumps) {
-            if (!brandsRepresented.has(pump.brand)) {
-                finalSelection.push(pump);
-                brandsRepresented.add(pump.brand);
-            }
+        // A lista de bombas já está ordenada por potência.
+        // Esta função simplesmente garante que não mostramos mais de 10 resultados.
+        if (pumps.length > 10) {
+            return pumps.slice(0, 10);
         }
-
-        // Preencher com as melhores bombas restantes até ao limite de 10
-        for (const pump of pumps) {
-            if (finalSelection.length >= 10) break;
-            if (!finalSelection.some(p => p.model === pump.model)) {
-                finalSelection.push(pump);
-            }
-        }
-
-        // Re-ordena o resultado final por potência para consistência
-        return finalSelection.sort((a,b) => a.powerAtOp - b.powerAtOp);
+        return pumps;
     }
 
     function getInterpolatedValue(targetX, curve) {
@@ -339,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h5 class="text-xl font-bold text-gray-900 dark:text-white">${pump.brand} ${pump.model}</h5>
                     <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600 dark:text-gray-300">
                         <span><strong>Potência:</strong> <span class="font-bold text-indigo-600 dark:text-indigo-400">${pump.powerAtOp.toFixed(3)} kW</span></span>
-                        <span><strong>Rendimento:</strong> ${pump.rendimento.toFixed(1)}%</span>
+                            <span><strong>Rendimento:</strong> ${pump.rendimento.toFixed(1)}%</span>
                         <span><strong>Folga H:</strong> ${pump.folga.toFixed(1)}%</span>
                     </div>
                 </div>
@@ -375,11 +335,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const powerInWatts = powerAtOp * 1000;
 
         if (pump.voltage === '230V' && powerInWatts > 0) {
-            // Cálculo para monofásico
             const voltageNum = 230;
             amperage = powerInWatts / (voltageNum * pump.powerFactor);
         } else if (pump.voltage === '400V' && powerInWatts > 0) {
-            // Cálculo para trifásico
             const voltageNum = 400;
             amperage = powerInWatts / (voltageNum * Math.sqrt(3) * pump.powerFactor);
         }
@@ -438,8 +396,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getChartColors() {
-        // A deteção de dark mode pode não funcionar corretamente no contexto de impressão.
-        // Forçamos um fundo branco para a impressão, então usamos cores de gráfico para modo claro.
         const isPrinting = window.matchMedia('print').matches;
         const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches && !isPrinting;
 
@@ -477,8 +433,8 @@ document.addEventListener('DOMContentLoaded', () => {
          comparisonChart = new Chart(ctx, { type: 'scatter', data: { datasets },
             options: { responsive: true, maintainAspectRatio: true,
                 animation: {
-                    duration: 500, // Duração da animação em ms
-                    easing: 'easeInOutQuart' // Efeito de suavização
+                    duration: 500,
+                    easing: 'easeInOutQuart'
                 },
                 interaction: { mode: 'nearest', intersect: false },
                 scales: {
@@ -539,7 +495,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let canvas = document.getElementById('pumpCurveChart');
         if (!canvas) return;
 
-        // Recriar o canvas para evitar problemas de reutilização com Chart.js
         const newCanvas = canvas.cloneNode(true);
         canvas.parentNode.replaceChild(newCanvas, canvas);
         canvas = newCanvas;
@@ -619,7 +574,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
-
     // Botões de Navegação
     backToFormBtn.addEventListener('click', () => {
         switchSection(formSection);
@@ -634,9 +588,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     printReportBtn.addEventListener('click', () => {
-        // Redesenha o gráfico com cores claras para impressão antes de imprimir
-        // A lógica em getChartColors() já trata disto através de `window.matchMedia('print')`
-        // Mas podemos forçar uma redesenhagem para garantir que está atualizado
         if (reportChart) {
             reportChart.update();
         }
@@ -652,7 +603,8 @@ document.addEventListener('DOMContentLoaded', () => {
         switchSection(formSection);
     });
 
-
     // Estado inicial
     controlTypeContainer.style.display = 'block';
-});
+}
+
+document.addEventListener('DOMContentLoaded', loadDatabase);

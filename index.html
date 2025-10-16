@@ -15,9 +15,14 @@
 
     <div id="mainContainer" class="max-w-5xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden">
         <!-- Cabeçalho -->
-        <header class="p-6 md:p-8 bg-indigo-600 text-white">
-            <h1 class="text-3xl font-bold">Seletor de Bombas de Circulação</h1>
-            <p class="mt-2 text-indigo-200">Insira os parâmetros do seu sistema para encontrar a bomba ideal.</p>
+        <header class="p-6 md:p-8 bg-indigo-600 text-white flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold">Seletor de Bombas de Circulação</h1>
+                <p class="mt-2 text-indigo-200">Insira os parâmetros do seu sistema para encontrar a bomba ideal.</p>
+            </div>
+            <button id="viewDatabaseBtn" class="py-2 px-5 border border-indigo-400 text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:scale-105">
+                Ver Base de Dados
+            </button>
         </header>
 
         <main>
@@ -109,11 +114,8 @@
                         </div>
                     </div>
 
-                    <!-- Botões de Ação -->
-                    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-600 flex justify-end items-center gap-4">
-                        <button type="button" id="viewDatabaseBtn" class="py-3 px-6 border border-gray-300 dark:border-gray-500 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-105">
-                            Ver Base de Dados
-                        </button>
+                    <!-- Botão de Ação -->
+                    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-600 text-right">
                         <button type="submit" class="inline-flex justify-center py-3 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-105">
                             Encontrar Bombas
                         </button>

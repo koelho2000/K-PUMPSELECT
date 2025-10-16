@@ -9,17 +9,23 @@ body {
 }
 
 .hidden {
-    opacity: 0;
-    transform: translateY(20px);
-    pointer-events: none; /* Impede interação quando oculto */
-    display: none !important; /* Mantém a compatibilidade com a lógica JS existente */
+    display: none !important;
 }
 
-/* Animação de entrada */
 .visible {
-    opacity: 1;
-    transform: translateY(0);
     display: block !important;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Estilos para a impressão */
